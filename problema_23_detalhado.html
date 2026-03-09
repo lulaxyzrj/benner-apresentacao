@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problema 23 - Gargalos do Fechamento Mensal | Benner Axia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.7; }
+        .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-bottom: 2px solid #334155; padding: 30px 50px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+        .header-content h1 { color: #2563eb; font-size: 32px; margin-bottom: 8px; }
+        .header-content .subtitle { color: #94a3b8; font-size: 16px; }
+        .header-logo { height: 60px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 50px; }
+        .section { background: #1e293b; padding: 35px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #2563eb; }
+        .section h2 { color: #2563eb; font-size: 24px; margin-bottom: 20px; font-weight: 600; }
+        .section h3 { color: #60a5fa; font-size: 20px; margin: 25px 0 15px 0; font-weight: 600; }
+        .section p { color: #cbd5e1; margin-bottom: 15px; font-size: 16px; }
+        .bullet-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .bullet-list li { padding: 8px 0 8px 25px; position: relative; color: #e2e8f0; font-size: 16px; }
+        .bullet-list li:before { content: "▪"; position: absolute; left: 0; color: #2563eb; font-size: 18px; }
+        .sub-bullet { padding-left: 20px; margin-top: 5px; }
+        .sub-bullet li { padding-left: 20px; }
+        .sub-bullet li:before { content: "◦"; color: #64748b; font-size: 16px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .kpi-card { background: #0f172a; padding: 20px; border-radius: 6px; border-left: 3px solid #2563eb; }
+        .kpi-card h4 { color: #2563eb; margin-bottom: 10px; font-size: 18px; }
+        .back-link { display: inline-block; margin-top: 25px; padding: 12px 24px; background: #1e293b; border: 1px solid #334155; color: #94a3b8; text-decoration: none; border-radius: 6px; transition: all 0.2s; }
+        .back-link:hover { border-color: #2563eb; color: #e2e8f0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Problema 23: Gargalos do Fechamento Mensal</h1>
+            <div class="subtitle">Documentação Técnica Detalhada</div>
+        </div>
+        <img src="data:image/png;base64,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" alt="Axia Energia" class="header-logo">
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Contexto e Descrição do Problema</h2>
+            <p>
+                Cinco fluxos críticos no fechamento mensal: (1) Fluxo de Pedido: tarefa não chega ao aprovador, pedido precisa ser reaberto via script; (2) Fluxo de Pagamento: timeout SAP ↔ Benner, cancelamentos não sincronizados; (3) Fluxo de Seguros: poucos problemas mas muito manual; (4) Fluxo de Resgate/Depósito: falta processo estruturado, dependência de terceiros (Docato/Tesouraria), ausência de rastreabilidade; (5) Fluxo de Encerramento: depende de todos anteriores, trava se houver pendência, pasta encerrada com saldo. Correções técnicas já aplicadas em produção (subitem 23.1), validação em andamento com Fernanda. Foco atual: qualidade do dado, métricas palpáveis. Monitoramentos relevantes: movimentações processuais, anexos, depósitos negativos.
+            </p>
+            <a href="apresentacao_23_problemas.html#slide-23" class="back-link">← Voltar para Apresentação</a>
+        </div>
+
+        <div class="section">
+            <h2>Indicadores de Qualidade Sugeridos</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <h4>1. % Fluxos de Pedido Finalizados no Prazo</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de fluxos de pedido (provisões & prognóstico) concluídos sem travamento
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>2. Quantidade de Tarefas que Não Chegam ao Aprovador</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Volume de tarefas travadas antes de chegar ao aprovador
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>3. Quantidade de Pedidos Reabertos Manualmente (Script)</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Volume de pedidos que precisaram ser reabertos via script
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>4. Taxa de Timeout SAP no Fluxo de Pagamento</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de timeouts na integração Benner ↔ SAP durante pagamentos
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>5. % Cancelamentos SAP Não Sincronizados com Benner</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de cancelamentos no SAP que não retornam ao Benner
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>6. % Fluxo de Seguros com Processos Manuais</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de operações manuais no fluxo de seguros
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>7. Tempo Médio de Processamento Manual no Fluxo de Seguros</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Tempo gasto em atividades manuais no fluxo de seguros
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>8. % Resgates/Depósitos com Rastreabilidade Completa</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de operações com rastreabilidade de ponta a ponta
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>9. Taxa de Dependência de Terceiros (Docato/Tesouraria)</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de registros que dependem de ação externa
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>10. % Pastas Travadas por Dependências de Fluxos Anteriores</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de pastas bloqueadas para encerramento por pendências em fluxos
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>11. Quantidade de Pastas Encerradas com Saldo</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Volume de pastas encerradas indevidamente com saldo pendente
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>12. Tempo Médio de Fechamento Mensal</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Tempo total gasto para completar fechamento mensal
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>13. % Correções Implementadas Validadas (Subitem 23.1)</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de correções técnicas já validadas em produção
+                    </p>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>14. Taxa de Sucesso do Fechamento Mensal (Sem Retrabalho)</h4>
+                    <p style="color: #cbd5e1; font-size: 15px; margin-top: 8px;">
+                        Percentual de fechamentos concluídos sem necessidade de correções/ajustes
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Detalhamento Técnico</h2>
+            
+            <h3>I. Gargalos Específicos do Fechamento Mensal</h3>
+            <ul class="bullet-list">
+                <li>Fluxo de Pedido (provisões & prognóstico):
+                    <ul class="bullet-list sub-bullet">
+                        <li>Tarefa não chega ao aprovador</li>
+                        <li>Fluxo não finaliza</li>
+                        <li>Pedido precisa ser reaberto manualmente via script</li>
+                    </ul>
+                </li>
+                <li>Fluxo de Pagamento:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Problemas de integração SAP ↔ Benner (timeout)</li>
+                        <li>Cancelamentos não sincronizados entre os dois sistemas</li>
+                    </ul>
+                </li>
+                <li>Fluxo de Seguros:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Poucos problemas, mas muito manual</li>
+                    </ul>
+                </li>
+                <li>Fluxo de Resgate/Depósito:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Falta processo estruturado</li>
+                        <li>Registros dependem de terceiros (Docato/Tesouraria)</li>
+                        <li>Ausência de rastreabilidade</li>
+                    </ul>
+                </li>
+                <li>Fluxo de Encerramento de Pasta:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Depende de todos os fluxos anteriores; trava se houver pendência</li>
+                        <li>Pasta encerrada com saldo</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>II. Relação com reunião e ajustes realizados</h3>
+            <ul class="bullet-list">
+                <li>O item 23 decorre diretamente da reunião realizada com as áreas envolvidas.</li>
+                <li>Desde a reunião, foram realizados ajustes e análises técnicas.</li>
+                <li>Causas raiz identificadas para:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Fluxos que não finalizavam</li>
+                        <li>Tarefas que ficavam travadas ao chegar ao usuário</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>III. Correções e status atual</h3>
+            <ul class="bullet-list">
+                <li>As correções identificadas já foram colocadas em produção.</li>
+                <li>O foco atual é a validação do item 23 após as correções aplicadas.</li>
+                <li>A validação está sendo acompanhada pela Fernanda.</li>
+                <li>O acompanhamento se concentra principalmente no subitem 23.1.</li>
+            </ul>
+
+            <h3>IV. Detalhamento dos subitens do item 23</h3>
+            <ul class="bullet-list">
+                <li>23.1: Natureza técnica, correção já aplicada, necessita validação pós-produção.</li>
+                <li>23.2: Relacionado ao fluxo de pagamento.</li>
+                <li>23.3: Relacionado ao fluxo de seguro.</li>
+                <li>23.4: Natureza mais processual, depende da resolução dos pontos anteriores.</li>
+            </ul>
+
+            <h3>V. Escopo do trabalho realizado</h3>
+            <ul class="bullet-list">
+                <li>Todos os pontos levantados pelas áreas foram percorridos.</li>
+                <li>O trabalho não teve como objetivo redesenhar processos formais.</li>
+                <li>O percurso serviu para:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Entendimento do funcionamento do sistema</li>
+                        <li>Entendimento dos tipos de processos</li>
+                        <li>Entendimento de como os dados circulam e são tratados</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>VI. Foco atual</h3>
+            <ul class="bullet-list">
+                <li>O foco principal está na qualidade do dado.</li>
+                <li>Interesse em definir:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Como aferir a qualidade do dado</li>
+                        <li>Como medir confiabilidade de forma objetiva</li>
+                    </ul>
+                </li>
+                <li>Busca-se estabelecer métricas palpáveis para acompanhamento.</li>
+            </ul>
+
+            <h3>VII. Próximos alinhamentos</h3>
+            <ul class="bullet-list">
+                <li>Intenção de nova conversa com o Vitor.</li>
+                <li>Antes desse encontro, é necessário:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Revisar internamente os pontos levantados</li>
+                        <li>Ajustar itens que perderam sentido ao longo da análise</li>
+                        <li>Reorganizar prioridades</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>VIII. Evolução no entendimento do sistema</h3>
+            <ul class="bullet-list">
+                <li>Ampliação do entendimento sobre:
+                    <ul class="bullet-list sub-bullet">
+                        <li>O que é o sistema</li>
+                        <li>Como os processos são tratados</li>
+                        <li>Como os dados podem ser utilizados</li>
+                    </ul>
+                </li>
+                <li>O entendimento não se limita à entrega de solução, mas ao funcionamento do conjunto.</li>
+            </ul>
+
+            <h3>IX. Uso dos dados para monitoramento</h3>
+            <ul class="bullet-list">
+                <li>O sistema possui dados e informações suficientes para:
+                    <ul class="bullet-list sub-bullet">
+                        <li>Extração</li>
+                        <li>Manipulação</li>
+                        <li>Geração de controles</li>
+                    </ul>
+                </li>
+                <li>É possível substituir atividades manuais por monitoramentos sistêmicos.</li>
+                <li>Dinâmicas já existentes podem ser refletidas no sistema.</li>
+            </ul>
+
+            <h3>X. Monitoramentos citados como relevantes</h3>
+            <ul class="bullet-list">
+                <li>Monitoramento de movimentações processuais.</li>
+                <li>Monitoramento de novos anexos.</li>
+                <li>Tratamento de depósitos judiciais negativos.</li>
+                <li>Esses pontos são considerados relevantes e factíveis de endereçamento.</li>
+            </ul>
+
+            <h3>XI. Encerramento da reunião</h3>
+            <ul class="bullet-list">
+                <li>Antes de avançar em novas frentes, é necessário consolidar os pontos discutidos.</li>
+                <li>A liberação dos participantes ocorre após o encerramento da pauta.</li>
+                <li>O encontro é encerrado com alinhamento sobre próximos passos e agradecimentos.</li>
+            </ul>
+        </div>
+
+        <a href="apresentacao_23_problemas.html#slide-23" class="back-link">← Voltar para Apresentação</a>
+    </div>
+</body>
+</html>
