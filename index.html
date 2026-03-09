@@ -187,6 +187,17 @@
             border-radius: 12px;
             border-left: 4px solid #2563eb;
         }
+        
+        .stat-card[style*="cursor"] {
+            transition: all 0.3s;
+        }
+        
+        .stat-card[style*="cursor"]:hover {
+            background: #0f172a;
+            border-left-color: #60a5fa;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
 
         .stat-number {
             color: #2563eb;
@@ -225,7 +236,7 @@
                         <div class="stat-number">5</div>
                         <div class="stat-label">Fluxos Críticos</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" style="cursor: pointer;" onclick="window.location.href='indicadores.html'">
                         <div class="stat-number">238</div>
                         <div class="stat-label">Indicadores Propostos</div>
                     </div>
@@ -240,7 +251,7 @@
                 <div class="slide-number">Problema 01</div>
                 <div class="slide-title">Base Suja por Migrações Históricas</div>
                 <div class="slide-description">Consolidação de 5 sistemas legados (Ágape, VB6, 2 Benner antigos, DNJD) sem limpeza prévia. Campos K9_ e K_ evidenciam legado. Processos duplicados, dados inconsistentes, histórico truncado. Migração concluída em 2025 mas base permanece contaminada. Impacto: confiabilidade comprometida, reconciliações manuais recorrentes, dificuldade em análises históricas.</div>
-                <a href="problema_01_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+                <a href="problema_01_revisado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
