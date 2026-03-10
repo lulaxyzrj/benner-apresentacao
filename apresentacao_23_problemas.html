@@ -3,897 +3,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico de Qualidade de Dados - Benner Jurídico Axia</title>
+    <title>Benner Axia - 23 Problemas Identificados</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-            overflow: hidden;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; overflow: hidden; }
+        
+        /* HEADER COMPACTO */
         .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 2px solid #334155;
+            padding: 15px 40px;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 180px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 2px solid #334155;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px;
             z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .header-content h1 {
+            color: #2563eb;
+            font-size: 24px;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .header-content .subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+        
+        .header-logo {
+            height: 45px;
         }
 
-        .logo {
-            height: 110px;
-        }
-
-        .presentation {
-            width: 100vw;
+        /* SLIDES */
+        .slide-container {
             height: 100vh;
-            padding-top: 180px;
-            position: relative;
+            padding-top: 70px;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
         }
 
         .slide {
-            display: none;
-            width: 100%;
-            height: calc(100vh - 250px);
-            padding: 50px 70px;
+            min-height: calc(100vh - 70px);
+            display: flex;
             flex-direction: column;
             justify-content: center;
-            overflow-y: auto;
+            align-items: center;
+            padding: 60px;
+            scroll-snap-align: start;
         }
 
-        .slide.active {
-            display: flex;
-        }
-
-        .slide-header {
-            border-left: 4px solid #0000ff;
-            padding-left: 20px;
-            margin-bottom: 35px;
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+            background: #1e293b;
+            padding: 50px;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
         }
 
         .slide-number {
-            font-size: 13px;
             color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
-            font-weight: 600;
         }
 
-        h1 {
-            font-size: 40px;
-            color: #0000FE;
+        .slide-title {
+            color: #2563eb;
+            font-size: 36px;
+            margin-bottom: 25px;
             font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
-        .subtitle {
-            font-size: 20px;
-            color: #94a3b8;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .problem-summary {
-            font-size: 18px;
-            line-height: 1.7;
+        .slide-description {
             color: #cbd5e1;
+            font-size: 18px;
+            line-height: 1.8;
             margin-bottom: 30px;
-            background: #1e293b;
-            padding: 25px;
+        }
+
+        .slide-link {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
             border-radius: 8px;
-            border-left: 3px solid #64748b;
-        }
-
-        h2 {
-            font-size: 22px;
-            color: #0000FE;
             font-weight: 600;
-            margin: 25px 0 15px 0;
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
-        .bullet-list {
-            list-style: none;
-            padding-left: 0;
-            margin: 12px 0;
+        .slide-link:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
         }
-
-        .bullet-list li {
-            padding: 8px 0 8px 25px;
-            position: relative;
-            font-size: 17px;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-
-        .bullet-list li:before {
-            content: "▪";
-            position: absolute;
-            left: 0;
-            color: #0000ff;
-            font-size: 20px;
-        }
-
-        .impact-box {
-            background: #1e293b;
-            border-left: 3px solid #ef4444;
-            padding: 20px 25px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-
-        .impact-box .label {
-            color: #ef4444;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .navigation {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-top: 2px solid #334155;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
-        }
-
-        .nav-button {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #94a3b8;
-            padding: 12px 28px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .nav-button:hover:not(:disabled) {
-            background: #334155;
-            color: #e2e8f0;
-            border-color: #0000ff;
-        }
-
-        .nav-button:disabled {
-            opacity: 0.3;
+        
+        .slide-link.disabled {
+            background: #374151;
+            color: #6b7280;
             cursor: not-allowed;
         }
-
-        .slide-counter {
-            color: #64748b;
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        
+        .slide-link.disabled:hover {
+            transform: none;
+            box-shadow: none;
         }
 
-        .slide-counter .current {
-            color: #0000ff;
-            font-size: 18px;
+        /* NAVEGAÇÃO */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 200;
         }
 
-        .slide::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .slide::-webkit-scrollbar-track {
+        .nav-btn {
+            width: 50px;
+            height: 50px;
             background: #1e293b;
-        }
-
-        .slide::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-
-        .slide::-webkit-scrollbar-thumb:hover {
-            background: #0000ff;
-        }
-
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        .column {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 3px solid #0000ff;
-        }
-
-        .column h3 {
-            color: #0000ff;
-            font-size: 18px;
-            margin-bottom: 12px;
-        }
-
-        .detail-link {
-            display: inline-flex;
+            border: 2px solid #334155;
+            border-radius: 50%;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            background: #1e293b;
-            border: 2px solid #0000ff;
-            color: #0000ff;
-            padding: 12px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            margin-top: 25px;
-            transition: all 0.2s;
+            justify-content: center;
+            font-size: 20px;
         }
 
-        .detail-link:hover {
-            background: #0000ff;
-            color: #ffffff;
+        .nav-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #0f172a;
+        }
+
+        /* SLIDE INICIAL */
+        .intro-slide {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .intro-slide .slide-content {
+            text-align: center;
+            background: transparent;
+            border: none;
+        }
+
+        .intro-slide .slide-title {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+
+        .intro-slide .slide-subtitle {
+            color: #60a5fa;
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        .intro-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .stat-number {
+            color: #2563eb;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="data:image/png;base64,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" alt="Axia Energia" class="logo">
-        <div style="color: #94a3b8; font-size: 16px; font-weight: 600; letter-spacing: 0.5px;">
-            DIAGNÓSTICO DE QUALIDADE DE DADOS | BENNER JURÍDICO
+        <div class="header-content">
+            <h1>Benner 2.0 - Diagnóstico de Qualidade de Dados</h1>
+            <div class="subtitle">23 Problemas Identificados | Axia Energia</div>
         </div>
+        <img src="data:image/png;base64,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" alt="Axia Energia" class="header-logo">
     </div>
 
-    <div class="presentation">
-        <!-- SLIDE 1 -->
-        <div class="slide active" id="slide-1">
-            <div class="slide-header">
-                <div class="slide-number">Problema 01 de 23</div>
-                <h1>Base Suja por Migrações Históricas</h1>
-                <div class="subtitle">Consolidação de 5 sistemas legados sem limpeza</div>
-            </div>
-
-            <div class="problem-summary">
-                5 sistemas legados foram consolidados em um único banco Benner (2021) sem governança de qualidade. Resultado: cadastros duplicados de órgãos, comarcas, fornecedores e listas desatualizadas gerando erros em cascata.
-            </div>
-
-            <div>
-                <h2>Causa Raiz</h2>
-                <ul class="bullet-list">
-                    <li>Decisão de instalação única consolidada vs. ambientes separados</li>
-                    <li>Implantações desfasadas sem limpeza prévia</li>
-                    <li>Segmentação apenas lógica, não estrutural</li>
-                    <li>Migração sem governança de qualidade de dados</li>
-                </ul>
-            <a href="problema_01_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+    <div class="slide-container" id="slideContainer">
+        <!-- SLIDE 0: Intro -->
+        <div class="slide intro-slide" id="slide-0">
+            <div class="slide-content">
+                <div class="slide-title">Diagnóstico Benner 2.0</div>
+                <div class="slide-subtitle">Análise de Qualidade de Dados e Governança</div>
+                <div class="intro-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">Problemas Identificados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Fluxos Críticos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">238</div>
+                        <div class="stat-label">Indicadores Propostos</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- SLIDE 2 -->
+        <!-- SLIDES 1-23 -->
+
+        <div class="slide" id="slide-1">
+            <div class="slide-content">
+                <div class="slide-number">Problema 01</div>
+                <div class="slide-title">Base Suja por Migrações Históricas</div>
+                <div class="slide-description">Consolidação de 5 sistemas legados (Ágape, VB6, 2 Benner antigos, DNJD) sem limpeza prévia. Campos K9_ e K_ evidenciam legado. Processos duplicados, dados inconsistentes, histórico truncado. Migração concluída em 2025 mas base permanece contaminada. Impacto: confiabilidade comprometida, reconciliações manuais recorrentes, dificuldade em análises históricas.</div>
+                <a href="problema_01_revisado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-2">
+            <div class="slide-content">
+                <div class="slide-number">Problema 02</div>
+                <div class="slide-title">Falta de Double Check Contratual</div>
+                <div class="slide-description">Parceiro Solucionnare contratado mas não implementado. Validação de petições iniciais OCR/crawler não ocorre. Gap: ausência de verificação dupla antes do cadastro no Benner. Impacto: dados incorretos persistem sem detecção tempestiva. Solucionnare adotado por 145 dos 150 clientes Benner como padrão de mercado.</div>
+                <a href="problema_02_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-3">
+            <div class="slide-content">
+                <div class="slide-number">Problema 03</div>
+                <div class="slide-title">Anexos Chegando Incompletos</div>
+                <div class="slide-description">PDF da petição inicial chega 24-48h depois dos metadados. Gap estrutural na camada de ingestion. Metadados (partes, objeto, valor) chegam primeiro, documento anexo atrasa. Impossível validar informações no momento do cadastro. BPO aguarda janela temporal para completar registro. Impacto: latência no cadastro completo, risco de cadastro baseado apenas em metadados incompletos.</div>
+                <a href="problema_03_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-4">
-            <div class="slide-header">
-                <div class="slide-number">Problema 02 de 23</div>
-                <h1>Falta de Double Check Contratual</h1>
-                <div class="subtitle">Parceiro Solucionnare não implementado no Benner</div>
-            </div>
-
-            <div class="problem-summary">
-                Sistema não valida automaticamente se processos capturados correspondem a contratos ativos da empresa. BPO precisa fazer validação manual contra base contratual.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Risco de cadastrar processos irrelevantes</li>
-                    <li>Sobrecarga do BPO com validação manual</li>
-                    <li>Perda de janelas de prazo por falta de priorização</li>
-                </ul>
-            <a href="problema_02_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 04</div>
+                <div class="slide-title">OCR/IA Não Confiável</div>
+                <div class="slide-description">OCR/IA do Benner precisa de crawler mais robusto. Solucionnare é a opção de mercado (145/150 clientes). Falhas: certificados expirados, homônimos (falsos positivos), tribunais sem integração. Captura depende de crawler terceirizado (API Oito). Impacto: processos não capturados, andamentos perdidos, necessidade de monitoramento manual complementar.</div>
+                <a href="problema_04_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 3 -->
+        <div class="slide" id="slide-5">
+            <div class="slide-content">
+                <div class="slide-number">Problema 05</div>
+                <div class="slide-title">Registro de Andamentos Fraco</div>
+                <div class="slide-description">Sentenças e eventos críticos não registrados sistematicamente. Advogados não cadastram andamentos-chave no Benner (depende de disciplina individual). Sistema não auto-classifica risco sem registro de evento. Impacto: provisões subestimadas, risco de auditoria (CPC 25, SOx), análise de risco defasada.</div>
+                <a href="problema_05_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-6">
+            <div class="slide-content">
+                <div class="slide-number">Problema 06</div>
+                <div class="slide-title">Cargas Massivas Sem Trilha</div>
+                <div class="slide-description">Cargas recorrentes alteram base sem trilha de aprovação documentada. Volume: centenas de milhares de registros por carga. Trilha de aprovação sempre seguida (não documentada em sistema). Falta: rastreabilidade digital, log de quem aprovou/executou. Impacto: auditoria comprometida, impossível reverter ou investigar alterações massivas.</div>
+                <a href="problema_06_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-7">
-            <div class="slide-header">
-                <div class="slide-number">Problema 03 de 23</div>
-                <h1>Anexos Chegando Incompletos</h1>
-                <div class="subtitle">Petição inicial chega 24-48h depois dos metadados</div>
-            </div>
-
-            <div class="problem-summary">
-                Metadados do processo (número, partes, tribunal) chegam imediatamente, mas o PDF da petição inicial demora 24-48h. BPO precisa cadastrar sem ter informações críticas que só estão no documento.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Cadastros incompletos ou incorretos</li>
-                    <li>Valores e pedidos estimados, não reais</li>
-                    <li>Necessidade de retrabalho quando PDF chega</li>
-                </ul>
-            <a href="problema_03_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 07</div>
+                <div class="slide-title">Integração SAP Não Bidirecional</div>
+                <div class="slide-description">Estornos e cancelamentos no SAP não sincronizam com Benner. Fluxo unidirecional: Benner → SAP. Reversões no SAP não retornam. Mapa contábil não implementado (lançamentos manuais). Impacto: descolamento entre sistemas, reconciliações manuais permanentes, risco de duplicidade ou desatualização.</div>
+                <a href="problema_07_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 4 -->
+        <div class="slide" id="slide-8">
+            <div class="slide-content">
+                <div class="slide-number">Problema 08</div>
+                <div class="slide-title">Depósitos com Saldo Negativo</div>
+                <div class="slide-description">Sistema não recalcula correção monetária automaticamente. Casos documentados de saldo negativo. Origem: sequência de lançamentos (depósito → resgate → correção atrasada). Sistema aceita saldo negativo sem validação. Impacto: inconsistência com banco, reconciliação manual forçada, risco de auditoria.</div>
+                <a href="problema_08_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-9">
+            <div class="slide-content">
+                <div class="slide-number">Problema 09</div>
+                <div class="slide-title">Ausência de Histórico Temporal</div>
+                <div class="slide-description">Impossível reproduzir posições passadas (snapshot histórico). Sistema mantém apenas estado atual. Sem versionamento de provisões, classificações de risco ou valores. Impacto: auditoria de trilha histórica comprometida, impossível validar relatórios anteriores, análise de tendências limitada.</div>
+                <a href="problema_09_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-10">
-            <div class="slide-header">
-                <div class="slide-number">Problema 04 de 23</div>
-                <h1>OCR/IA Não Confiável</h1>
-                <div class="subtitle">Identifica valores e pedidos incorretamente</div>
-            </div>
-
-            <div class="problem-summary">
-                Motor de OCR/IA do Benner falha em extrair valores corretos de petições. Identifica números aleatórios como valores de causa, não distingue pedido principal de subsidiário.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Provisões baseadas em valores errados</li>
-                    <li>BPO refaz manualmente o que IA deveria fazer</li>
-                    <li>Desconfiança generalizada na automação</li>
-                </ul>
-            <a href="problema_04_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 10</div>
+                <div class="slide-title">Mapa Contábil Não Implementado</div>
+                <div class="slide-description">Lançamentos contábeis SAP são 100% manuais. Benner não envia classificação contábil automaticamente. Contabilidade recria mapa manualmente fora do sistema. Impacto: esforço duplicado, risco de erro humano, latência no fechamento contábil.</div>
+                <a href="problema_10_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 5 -->
+        <div class="slide" id="slide-11">
+            <div class="slide-content">
+                <div class="slide-number">Problema 11</div>
+                <div class="slide-title">Conciliação Manual Tripla</div>
+                <div class="slide-description">Benner × SAP × Bancos sem ID único compartilhado. Três bases de dados independentes. Reconciliação mensal manual via Excel. Ausência de chave primária comum. Impacto: esforço elevado, risco de erro, fechamento mensal atrasado.</div>
+                <a href="problema_11_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-12">
+            <div class="slide-content">
+                <div class="slide-number">Problema 12</div>
+                <div class="slide-title">Pastas com Depósito em Aberto</div>
+                <div class="slide-description">Encerramento administrativo bloqueado por saldo pendente. Sistema impede fechar pasta com depósito ativo. Valores que deveriam retornar à empresa mas não foram resgatados. Impacto: pastas acumuladas, impossível encerrar administrativamente, controle de ativo judicial comprometido.</div>
+                <a href="problema_12_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-13">
-            <div class="slide-header">
-                <div class="slide-number">Problema 05 de 23</div>
-                <h1>Registro de Andamentos Fraco</h1>
-                <div class="subtitle">Sentenças e atos críticos não registrados sistematicamente</div>
-            </div>
-
-            <div class="problem-summary">
-                Sentenças, decisões interlocutórias e andamentos que alteram risco processual não são registrados de forma consistente no Benner. Advogados registram quando lembram ou quando BPO cobra.
-            </div>
-
-            <div class="two-column">
-                <div class="column">
-                    <h3>Causa</h3>
-                    <ul class="bullet-list">
-                        <li>Sem workflow obrigatório</li>
-                        <li>Cultura de registro manual</li>
-                        <li>Falta de integração com tribunais</li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <h3>Consequência</h3>
-                    <ul class="bullet-list">
-                        <li>Risco não reclassificado</li>
-                        <li>Provisão subestimada</li>
-                        <li>Surpresas no fechamento</li>
-                    </ul>
-            <a href="problema_05_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-                </div>
+            <div class="slide-content">
+                <div class="slide-number">Problema 13</div>
+                <div class="slide-title">Depósitos Zerados Não Encerrados</div>
+                <div class="slide-description">Saldo zero no sistema mas banco mantém correção não levantada. Encerramento automático quando saldo = 0. Falha: ausência de lançamento de correção monetária. Cargas retroativas não reativam linha automaticamente. Impacto: divergência sistema-banco, risco de perda de correção não registrada.</div>
+                <a href="problema_13_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 6 -->
+        <div class="slide" id="slide-14">
+            <div class="slide-content">
+                <div class="slide-number">Problema 14</div>
+                <div class="slide-title">Depósitos Marcados 'Sanear'</div>
+                <div class="slide-description">Objeto marcado 'a sanear' sem clareza de status real. Impossível saber se: (1) foi tratado, (2) foi tratado mas objeto não atualizado, (3) não foi iniciado. Estado intermediário permanente. Necessidade de mapear responsabilidades e fluxo real. Impacto: falta de controle, impossível medir progresso de saneamento.</div>
+                <a href="problema_14_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-15">
+            <div class="slide-content">
+                <div class="slide-number">Problema 15</div>
+                <div class="slide-title">Contingências Pagas na Provisão</div>
+                <div class="slide-description">Documentação técnica pendente - arquivo não enviado.</div>
+                <a href="#" class="slide-link disabled">Documentação Pendente (Arquivo Não Enviado)</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-16">
-            <div class="slide-header">
-                <div class="slide-number">Problema 06 de 23</div>
-                <h1>Cargas Massivas Mensais e Trimestrais</h1>
-                <div class="subtitle">Alterações em lote executadas por equipe Benner com orientação da gestão
-            </div>
-
-            <div class="problem-summary">
-                Scripts alteram milhares de registros no final do mês para viabilizar o fechamento. 
-Cargas trimestrais para reclassificar riscos e ajustar provisões. Carga massiva é sintoma, não causa raiz.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Cargas massivas indicam falta de governança e do ciclo de vida dos processos</li>   
-                    <li>Capacity dos times de advogados pode ser a causa raiz, mas a solução não é alterar dados em lote</li>
-                    <li>Provisões podem refletir uma posição longe da realidade processual e contábil</li>
-                </ul>
-            <a href="problema_06_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 16</div>
+                <div class="slide-title">Reversão de Depósito Sem Pasta</div>
+                <div class="slide-description">Banco informa só nome do beneficiário no resgate. Sem número de processo ou identificador de pasta. Impossível vincular automaticamente. Mesmo banco fornece formatos diferentes de extrato. Problema na origem (antes do banco). Impacto: trabalho manual de identificação, risco de erro de vinculação.</div>
+                <a href="problema_16_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 7 -->
+        <div class="slide" id="slide-17">
+            <div class="slide-content">
+                <div class="slide-number">Problema 17</div>
+                <div class="slide-title">Comparações Mensais em Excel</div>
+                <div class="slide-description">Documentação técnica pendente - arquivo não enviado.</div>
+                <a href="#" class="slide-link disabled">Documentação Pendente (Arquivo Não Enviado)</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-18">
+            <div class="slide-content">
+                <div class="slide-number">Problema 18</div>
+                <div class="slide-title">Erros de Integração Benner ↔ SAP</div>
+                <div class="slide-description">Pagamento chega ao SAP mas confirmação não retorna. Risco de duplicidade ao reativar fluxo. Causas: timeout, falhas de rede, erros SAP. Tratamento: verificação manual no SAP para confirmar execução. Impacto: pagamentos travados, trabalho manual, risco de duplicação.</div>
+                <a href="problema_18_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-19">
-            <div class="slide-header">
-                <div class="slide-number">Problema 07 de 23</div>
-                <h1>Integração SAP Não Bidirecional</h1>
-                <div class="subtitle">Estornos e cancelamentos não sincronizados</div>
-            </div>
-
-            <div class="problem-summary">
-                Benner envia pedidos de pagamento ao SAP, mas não recebe confirmação de estorno ou cancelamento. Quando SAP cancela um pagamento, Benner não é notificado automaticamente.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Divergência entre Benner e SAP</li>
-                    <li>Pagamentos "fantasma" no sistema jurídico</li>
-                    <li>Conciliação manual mensal</li>
-                </ul>
-            <a href="problema_07_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 19</div>
+                <div class="slide-title">Processos Desmembrados</div>
+                <div class="slide-description">Datas de citação/distribuição incorretas em processos desmembrados. Sem vínculo automático pai-filho. Novas pastas não herdam datas do processo originário. BPO identifica por leitura textual (sem padrão entre tribunais). Impacto: cálculos de compulsório errados (datas são parâmetros críticos).</div>
+                <a href="problema_19_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
-        <!-- SLIDE 8 -->
+        <div class="slide" id="slide-20">
+            <div class="slide-content">
+                <div class="slide-number">Problema 20</div>
+                <div class="slide-title">Processos Sem Pedido</div>
+                <div class="slide-description">Sem pedido = sem provisão no fechamento trimestral. Solução de contorno: pedido remoto/zero como placeholder. Contato manual recorrente com advogados. Scripts/cargas quando pendências acumulam. Impacto: provisão subestimada, esforço manual elevado, risco de auditoria.</div>
+                <a href="problema_20_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-21">
+            <div class="slide-content">
+                <div class="slide-number">Problema 21</div>
+                <div class="slide-title">Processos em Encerramento Eterno</div>
+                <div class="slide-description">Documentação técnica pendente - arquivo não enviado.</div>
+                <a href="#" class="slide-link disabled">Documentação Pendente (Arquivo Não Enviado)</a>
+            </div>
+        </div>
+
         <div class="slide" id="slide-22">
-            <div class="slide-header">
-                <div class="slide-number">Problema 08 de 23</div>
-                <h1>Depósitos com Saldo Negativo</h1>
-                <div class="subtitle">Sistema não recalcula correção monetária</div>
-            </div>
-
-            <div class="problem-summary">
-                Depósitos judiciais apresentam saldo negativo porque sistema não aplica correção monetária corretamente após resgate parcial. Contabilidade detectou casos com -R$ milhares.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Balanço com passivos subestimados</li>
-                    <li>Apontamento de auditoria iminente</li>
-                    <li>Correção manual processo a processo</li>
-                </ul>
-            <a href="problema_08_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+            <div class="slide-content">
+                <div class="slide-number">Problema 22</div>
+                <div class="slide-title">Empréstimo Compulsório Não Integrado</div>
+                <div class="slide-description">Documentação técnica pendente - arquivo não enviado.</div>
+                <a href="#" class="slide-link disabled">Documentação Pendente (Arquivo Não Enviado)</a>
             </div>
         </div>
 
-        <!-- SLIDE 9 -->
-        <div class="slide" id="slide-25">
-            <div class="slide-header">
-                <div class="slide-number">Problema 09 de 23</div>
-                <h1>Ausência de Histórico Temporal</h1>
-                <div class="subtitle">Impossível reproduzir posições passadas</div>
-            </div>
-
-            <div class="problem-summary">
-                Sistema não mantém "fotografias" históricas de provisões. Não é possível consultar qual era a posição da contingência em junho/2025 ou comparar competências anteriores.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Auditoria não consegue validar variações</li>
-                    <li>Impossível investigar divergências passadas</li>
-                    <li>Perda de rastreabilidade para compliance</li>
-                </ul>
-            <a href="problema_09_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 10 -->
-        <div class="slide" id="slide-28">
-            <div class="slide-header">
-                <div class="slide-number">Problema 10 de 23</div>
-                <h1>Mapa Contábil Não Implementado</h1>
-                <div class="subtitle">Lançamentos SAP são manuais</div>
-            </div>
-
-            <div class="problem-summary">
-                Módulo de mapa contábil (que geraria lançamentos automáticos no SAP) nunca foi configurado. Contabilidade lança manualmente constituições, reversões e correções monetárias mensais.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Risco de erro humano em lançamentos</li>
-                    <li>Fechamento contábil atrasado</li>
-                    <li>Custos operacionais evitáveis</li>
-                </ul>
-            <a href="problema_10_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 11 -->
-        <div class="slide" id="slide-31">
-            <div class="slide-header">
-                <div class="slide-number">Problema 11 de 23</div>
-                <h1>Conciliação Manual Tripla</h1>
-                <div class="subtitle">Benner × SAP × Bancos sem ID único</div>
-            </div>
-
-            <div class="problem-summary">
-                Depósitos judiciais precisam ser conciliados entre três bases: Benner (gestão jurídica), SAP (contabilidade) e extratos bancários. Sem identificador único comum, conciliação é manual via planilha.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Divergências relevantes entre sistemas</li>
-                    <li>Semanas de trabalho manual mensal</li>
-                    <li>Impossível automatizar conciliação</li>
-                </ul>
-            <a href="problema_11_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 12 -->
-        <div class="slide" id="slide-34">
-            <div class="slide-header">
-                <div class="slide-number">Problema 12 de 23</div>
-                <h1>Pastas com Depósito em Aberto</h1>
-                <div class="subtitle">Encerramento bloqueado por saldo pendente</div>
-            </div>
-
-            <div class="problem-summary">
-                Processos encerrados judicialmente não podem ser fechados no Benner porque existe depósito judicial em aberto. Sistema bloqueia encerramento mesmo com processo transitado em julgado.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Pastas "zumbis" abertas eternamente</li>
-                    <li>Relatórios inflados com processos mortos</li>
-                    <li>Impossível limpar base legada</li>
-                </ul>
-            <a href="problema_12_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 13 -->
-        <div class="slide" id="slide-37">
-            <div class="slide-header">
-                <div class="slide-number">Problema 13 de 23</div>
-                <h1>Depósitos Zerados Não Encerrados</h1>
-                <div class="subtitle">Saldo zero mas registro permanece ativo</div>
-            </div>
-
-            <div class="problem-summary">
-                Depósitos com saldo R$ 0,00 continuam aparecendo como "em aberto" porque não foram formalmente encerrados no sistema. Gera ruído em relatórios e conciliações.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Volume falso de depósitos ativos</li>
-                    <li>Trabalho manual para filtrar zerados</li>
-                    <li>Confusão entre depósito real e resíduo</li>
-                </ul>
-            <a href="problema_13_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 14 -->
-        <div class="slide" id="slide-40">
-            <div class="slide-header">
-                <div class="slide-number">Problema 14 de 23</div>
-                <h1>Depósitos Marcados "Sanear"</h1>
-                <div class="subtitle">Status real desconhecido</div>
-            </div>
-
-            <div class="problem-summary">
-                Centenas de depósitos marcados como "a sanear" ou "verificar". Ninguém sabe se são reais, duplicados, legados ou erros. Responsabilidade não definida.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Base contaminada sem timeline de limpeza</li>
-                    <li>Impossível confiar em totalizadores</li>
-                    <li>Risco de materialidade em auditoria</li>
-                </ul>
-            <a href="problema_14_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 15 -->
-        <div class="slide" id="slide-43">
-            <div class="slide-header">
-                <div class="slide-number">Problema 15 de 23</div>
-                <h1>Contingências Pagas na Provisão</h1>
-                <div class="subtitle">Verificação manual depende de parecer</div>
-            </div>
-
-            <div class="problem-summary">
-                Processos já pagos podem continuar gerando provisão porque sistema não cruza automaticamente pagamentos com encerramento de pedidos. BPO precisa conferir caso a caso com advogado.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Provisão superestimada</li>
-                    <li>Distorção em relatórios gerenciais</li>
-                    <li>Trabalho manual intensivo no fechamento</li>
-                </ul>
-            <a href="problema_15_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 16 -->
-        <div class="slide" id="slide-46">
-            <div class="slide-header">
-                <div class="slide-number">Problema 16 de 23</div>
-                <h1>Reversão de Depósito Sem Pasta</h1>
-                <div class="subtitle">Banco não informa número do processo</div>
-            </div>
-
-            <div class="problem-summary">
-                Quando banco devolve depósito judicial, extrato traz apenas valor e data. Não informa número do processo. Impossível identificar qual pasta deve receber a reversão automaticamente.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Investigação manual processo a processo</li>
-                    <li>Atraso na atualização de saldos</li>
-                    <li>Risco de lançamento em pasta errada</li>
-                </ul>
-            <a href="problema_16_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 17 -->
-        <div class="slide" id="slide-49">
-            <div class="slide-header">
-                <div class="slide-number">Problema 17 de 23</div>
-                <h1>Comparações Mensais em Excel</h1>
-                <div class="subtitle">Legal Ops trabalha fora do sistema</div>
-            </div>
-
-            <div class="problem-summary">
-                Análise mensal de variações (novos processos, encerramentos, mudança de risco, alteração de valor) é feita em Excel. Extraem bases de mês anterior e atual, fazem queries para identificar deltas.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Dashboard crítico não está no sistema</li>
-                    <li>Risco de erro em fórmulas Excel</li>
-                    <li>Não escalável para volumes maiores</li>
-                </ul>
-            <a href="problema_17_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 18 -->
-        <div class="slide" id="slide-52">
-            <div class="slide-header">
-                <div class="slide-number">Problema 18 de 23</div>
-                <h1>Erros de Integração Benner ↔ SAP</h1>
-                <div class="subtitle">Timeouts e falhas intermitentes</div>
-            </div>
-
-            <div class="problem-summary">
-                Integração entre Benner e SAP apresenta erros de timeout, especialmente no fechamento mensal. Pedidos de pagamento ficam "travados" sem confirmação de sucesso ou falha.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Pagamentos atrasados</li>
-                    <li>Equipe técnica precisa reprocessar manualmente</li>
-                    <li>Falta de confiabilidade sistêmica</li>
-                </ul>
-            <a href="problema_18_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 19 -->
-        <div class="slide" id="slide-55">
-            <div class="slide-header">
-                <div class="slide-number">Problema 19 de 23</div>
-                <h1>Processos Desmembrados Sem Vínculo</h1>
-                <div class="subtitle">Datas de citação e distribuição erradas</div>
-            </div>
-
-            <div class="problem-summary">
-                Quando processo é desmembrado (um vira vários), sistema não mantém vínculo entre pai e filhos. Processos filhos herdam datas erradas, prejudicando controle de prazos e provisões.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Controle de prescrição incorreto</li>
-                    <li>Impossível rastrear origem do processo</li>
-                    <li>Relatórios de distribuição distorcidos</li>
-                </ul>
-            <a href="problema_19_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 20 -->
-        <div class="slide" id="slide-58">
-            <div class="slide-header">
-                <div class="slide-number">Problema 20 de 23</div>
-                <h1>Processos Sem Pedido = Sem Provisão</h1>
-                <div class="subtitle">Gap entre cadastro e análise de risco</div>
-            </div>
-
-            <div class="problem-summary">
-                Processos cadastrados sem pedido/prognóstico não entram no cálculo de provisão. Ficam "invisíveis" até que advogado cadastre pedido. Pode levar semanas.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Contingência subestimada no período</li>
-                    <li>Salto brusco de provisão quando pedido é cadastrado</li>
-                    <li>Auditoria questiona variações inexplicadas</li>
-                </ul>
-            <a href="problema_20_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 21 -->
-        <div class="slide" id="slide-61">
-            <div class="slide-header">
-                <div class="slide-number">Problema 21 de 23</div>
-                <h1>Processos em Encerramento Eterno</h1>
-                <div class="subtitle">Pendências impedem fechamento</div>
-            </div>
-
-            <div class="problem-summary">
-                Processos em "encerramento" com pendências (pagamento, depósito, documento) ficam travados indefinidamente. Não são fechados nem retornam para abertos. Status limbo.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Base com processos "mortos-vivos"</li>
-                    <li>Impossível saber quantos processos realmente ativos</li>
-                    <li>Workflow quebrado sem alerta</li>
-                </ul>
-            <a href="problema_21_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 22 -->
-        <div class="slide" id="slide-64">
-            <div class="slide-header">
-                <div class="slide-number">Problema 22 de 23</div>
-                <h1>Empréstimo Compulsório Não Integrado</h1>
-                <div class="subtitle">Pagamentos não abatem provisão</div>
-            </div>
-
-            <div class="problem-summary">
-                Processos de Empréstimo Compulsório (última empresa a implantar) não estão integrados corretamente. Pagamentos realizados não abatem automaticamente da provisão.
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto</div>
-                <ul class="bullet-list">
-                    <li>Provisão duplicada (pago + não baixado)</li>
-                    <li>Distorção material em balanço</li>
-                    <li>Correção manual urgente necessária</li>
-                </ul>
-            <a href="problema_22_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
-            </div>
-        </div>
-
-        <!-- SLIDE 23 -->
-        <div class="slide" id="slide-67">
-            <div class="slide-header">
-                <div class="slide-number">Problema 23 de 23</div>
-                <h1>Gargalos do Fechamento Mensal</h1>
-                <div class="subtitle">Cinco fluxos críticos concentrados</div>
-            </div>
-
-            <div class="problem-summary">
-                Todos os problemas anteriores convergem no fechamento mensal. Cinco fluxos críticos dependem de intervenção manual massiva nos últimos dias do mês.
-            </div>
-
-            <div>
-                <h2>Fluxos Críticos</h2>
-                <ul class="bullet-list">
-                    <li><strong>Pedido (provisões):</strong> Tarefas não chegam, fluxos não finalizam, reabertura manual via script</li>
-                    <li><strong>Pagamento:</strong> Timeouts SAP, cancelamentos não sincronizados</li>
-                    <li><strong>Seguros:</strong> Manual, poucos problemas mas não escalável</li>
-                    <li><strong>Resgate/Depósito:</strong> Processo não estruturado, dependência de terceiros (Docato/Tesouraria)</li>
-                    <li><strong>Encerramento de Pasta:</strong> Depende de todos anteriores, trava com qualquer pendência</li>
-                </ul>
-            </div>
-
-            <div class="impact-box">
-                <div class="label">Impacto Consolidado</div>
-                <ul class="bullet-list">
-                    <li>Fechamento contábil atrasado ou com qualidade comprometida</li>
-                    <li>Equipe sobrecarregada nos últimos 5 dias úteis</li>
-                    <li>Risco sistêmico de conformidade</li>
-                </ul>
-            <a href="problema_23_detalhado.html" class="detail-link">📄 Ver Documentação Técnica Completa</a>
+        <div class="slide" id="slide-23">
+            <div class="slide-content">
+                <div class="slide-number">Problema 23</div>
+                <div class="slide-title">Gargalos do Fechamento Mensal</div>
+                <div class="slide-description">Cinco fluxos críticos: (1) Pedido: tarefa não chega ao aprovador, script necessário; (2) Pagamento: timeout SAP, cancelamentos não sincronizados; (3) Seguros: muito manual; (4) Resgate/Depósito: sem processo estruturado, dependência de terceiros; (5) Encerramento: depende de todos, trava com pendências. Correções aplicadas (23.1), validação em andamento.</div>
+                <a href="problema_23_detalhado.html" class="slide-link">Ver Documentação Técnica Completa →</a>
             </div>
         </div>
 
     </div>
 
-    <div class="navigation">
-        <button class="nav-button" onclick="previousSlide()" id="prevBtn">◄ Anterior</button>
-        <div class="slide-counter">
-            <span class="current" id="current-slide">1</span> / <span id="total-slides">23</span>
-        </div>
-        <button class="nav-button" onclick="nextSlide()" id="nextBtn">Próximo ►</button>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="previousSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
     </div>
 
     <script>
-        let currentSlideIndex = 0;
+        let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
+        const container = document.getElementById('slideContainer');
 
-        function showSlide(index) {
-            slides[currentSlideIndex].classList.remove('active');
-            currentSlideIndex = index;
-            slides[currentSlideIndex].classList.add('active');
-            updateCounter();
-            updateNavButtons();
+        // Detectar hash na URL
+        function checkHash() {
+            const hash = window.location.hash;
+            if (hash) {
+                const slideNum = parseInt(hash.replace('#slide-', ''));
+                if (!isNaN(slideNum) && slideNum >= 0 && slideNum <= 23) {
+                    currentSlide = slideNum;
+                    goToSlide(currentSlide);
+                }
+            }
+        }
+
+        function goToSlide(n) {
+            currentSlide = Math.max(0, Math.min(n, slides.length - 1));
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.location.hash = `slide-${currentSlide}`;
         }
 
         function nextSlide() {
-            if (currentSlideIndex < totalSlides - 1) {
-                showSlide(currentSlideIndex + 1);
-            }
+            goToSlide(currentSlide + 1);
         }
 
         function previousSlide() {
-            if (currentSlideIndex > 0) {
-                showSlide(currentSlideIndex - 1);
-            }
+            goToSlide(currentSlide - 1);
         }
 
-        function updateCounter() {
-            document.getElementById('current-slide').textContent = currentSlideIndex + 1;
-        }
-
-        function updateNavButtons() {
-            document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
-            document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides - 1;
-        }
-
-
-        // Navigate to specific slide from URL hash
-        window.addEventListener('load', function() {
-            const hash = window.location.hash;
-            if (hash && hash.startsWith('#slide-')) {
-                const slideNum = parseInt(hash.replace('#slide-', '')) - 1;
-                if (slideNum >= 0 && slideNum < slides.length) {
-                    showSlide(slideNum);
-                }
-            }
-        });
-
-        // Keyboard navigation
+        // Navegação por teclado
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-                e.preventDefault();
-                nextSlide();
-            }
-            if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-                e.preventDefault();
-                previousSlide();
-            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') previousSlide();
         });
 
-        updateNavButtons();
-
-        // Navigate to slide from URL hash
-        window.addEventListener('load', function() {
-            const hash = window.location.hash;
-            if (hash && hash.startsWith('#slide-')) {
-                const slideNum = parseInt(hash.replace('#slide-', '')) - 1;
-                if (slideNum >= 0 && slideNum < slides.length) {
-                    showSlide(slideNum);
-                }
-            }
-        });
+        // Carregar hash inicial
+        checkHash();
     </script>
 </body>
 </html>
